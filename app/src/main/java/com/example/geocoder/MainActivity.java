@@ -29,17 +29,9 @@ import com.yandex.mapkit.search.Session;
 import com.yandex.runtime.Error;
 import com.yandex.runtime.image.ImageProvider;
 
-/**
- * This example shows how to add and interact with a layer that displays search results on the map.
- * Note: search API calls count towards MapKit daily usage limits. Learn more at
- * https://tech.yandex.ru/mapkit/doc/3.x/concepts/conditions-docpage/#conditions__limits
- */
 public class MainActivity extends Activity implements Session.SearchListener, CameraListener {
-    /**
-     * Replace "your_api_key" with a valid developer key.
-     * You can get it at the https://developer.tech.yandex.ru/ website.
-     */
-    private final String MAPKIT_API_KEY = "e6e3bb46-8ff9-49c6-b269-77f350a02933";
+
+    private final String API_KEY = "e6e3bb46-8ff9-49c6-b269-77f350a02933";
 
     private MapView mapView;
     private EditText searchEdit;
@@ -56,7 +48,7 @@ public class MainActivity extends Activity implements Session.SearchListener, Ca
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MapKitFactory.setApiKey(MAPKIT_API_KEY);
+        MapKitFactory.setApiKey(API_KEY);
         MapKitFactory.initialize(this);
         SearchFactory.initialize(this);
 
@@ -81,7 +73,7 @@ public class MainActivity extends Activity implements Session.SearchListener, Ca
         });
 
         mapView.getMap().move(
-                new CameraPosition(new Point(59.945933, 30.320045), 14.0f, 0.0f, 0.0f));
+                new CameraPosition(new Point(43.1162355,131.9039189), 9.0f, 0.0f, 0.0f));
 
         submitQuery(searchEdit.getText().toString());
     }
@@ -119,6 +111,7 @@ public class MainActivity extends Activity implements Session.SearchListener, Ca
     public void onSearchError(@NonNull Error error) {
 
     }
+
 
     @Override
     public void onCameraPositionChanged(
