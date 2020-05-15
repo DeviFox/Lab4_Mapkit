@@ -1,22 +1,45 @@
 package com.example.geocoder;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import com.yandex.mapkit.Animation;
+
+import androidx.annotation.NonNull;
+
+import com.yandex.mapkit.GeoObjectCollection;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
+import com.yandex.mapkit.map.CameraListener;
 import com.yandex.mapkit.map.CameraPosition;
+import com.yandex.mapkit.map.CameraUpdateSource;
+import com.yandex.mapkit.map.Map;
+import com.yandex.mapkit.map.MapObjectCollection;
+import com.yandex.mapkit.map.VisibleRegionUtils;
 import com.yandex.mapkit.mapview.MapView;
+import com.yandex.mapkit.search.Response;
 import com.yandex.mapkit.search.SearchFactory;
+import com.yandex.mapkit.search.SearchManagerType;
+import com.yandex.mapkit.search.SearchOptions;
+import com.yandex.mapkit.search.SearchManager;
+import com.yandex.mapkit.search.Session;
+import com.yandex.runtime.Error;
+import com.yandex.runtime.image.ImageProvider;
 
-import static com.example.geocoder.R.layout.activity_main;
-
-
-public class MainActivity extends AppCompatActivity {
-
+/**
+ * This example shows how to add and interact with a layer that displays search results on the map.
+ * Note: search API calls count towards MapKit daily usage limits. Learn more at
+ * https://tech.yandex.ru/mapkit/doc/3.x/concepts/conditions-docpage/#conditions__limits
+ */
+public class MainActivity extends Activity implements Session.SearchListener, CameraListener {
+    /**
+     * Replace "your_api_key" with a valid developer key.
+     * You can get it at the https://developer.tech.yandex.ru/ website.
+     */
     private final String MAPKIT_API_KEY = "e6e3bb46-8ff9-49c6-b269-77f350a02933";
-    private final Point TARGET_LOCATION = new Point(59.945933, 30.320045);
 
     private MapView mapView;
     private EditText searchEdit;
@@ -29,51 +52,82 @@ public class MainActivity extends AppCompatActivity {
                 VisibleRegionUtils.toPolygon(mapView.getMap().getVisibleRegion()),
                 new SearchOptions(),
                 this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         MapKitFactory.setApiKey(MAPKIT_API_KEY);
         MapKitFactory.initialize(this);
         SearchFactory.initialize(this);
 
-
+        setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
-        setContentView(activity_main);
 
         searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.COMBINED);
 
-        mapView = (MapView) findViewById(R.id.mapview);
-        mapView.getMap().move(
-                new CameraPosition(TARGET_LOCATION, 14.0f, 0.0f, 0.0f),
-                new Animation(Animation.Type.SMOOTH, 5),
-                null);
+        mapView = (MapView)findViewById(R.id.mapview);
+        mapView.getMap().addCameraListener(this);
 
-        searchEdit = (EditText)findViewById(R.id.search_edit);
+        searchEdit = (EditText)findViewById(R.id.textSearch);
         searchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-        }
-        }
-                public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        submitQuery(searchEdit.getText().toString());
-                    }
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    submitQuery(searchEdit.getText().toString());
+                }
 
-                    return false;
+                return false;
+            }
+        });
+
+        mapView.getMap().move(
+                new CameraPosition(new Point(59.945933, 30.320045), 14.0f, 0.0f, 0.0f));
+
+        submitQuery(searchEdit.getText().toString());
     }
+
     @Override
     protected void onStop() {
-        super.onStop();
         mapView.onStop();
         MapKitFactory.getInstance().onStop();
+        super.onStop();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mapView.onStart();
         MapKitFactory.getInstance().onStart();
+        mapView.onStart();
     }
 
+    @Override
+    public void onSearchResponse(Response response) {
+        MapObjectCollection mapObjects = mapView.getMap().getMapObjects();
+        mapObjects.clear();
+
+        for (GeoObjectCollection.Item searchResult : response.getCollection().getChildren()) {
+            Point resultLocation = searchResult.getObj().getGeometry().get(0).getPoint();
+            if (resultLocation != null) {
+                mapObjects.addPlacemark(
+                        resultLocation,
+                        ImageProvider.fromResource(this, R.drawable.map));
+            }
+        }
+    }
+
+    @Override
+    public void onSearchError(@NonNull Error error) {
+
+    }
+
+    @Override
+    public void onCameraPositionChanged(
+            Map map,
+            CameraPosition cameraPosition,
+            CameraUpdateSource cameraUpdateSource,
+            boolean finished) {
+        if (finished) {
+            submitQuery(searchEdit.getText().toString());
+        }
+    }
 }

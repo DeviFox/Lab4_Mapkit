@@ -18,29 +18,31 @@
 
     </com.yandex.mapkit.mapview.MapView>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/search_edit"
-        android:layout_width="315dp"
-        android:layout_height="48dp"
-        android:hint="@string/text_input"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.964" />
-
     <Button
         android:id="@+id/button"
         android:layout_width="94dp"
-        android:layout_height="48dp"
+        android:layout_height="51dp"
         android:text="@string/search"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.993"
+        app:layout_constraintHorizontal_bias="0.99"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/mapview"
-        app:layout_constraintVertical_bias="0.965" />
+        app:layout_constraintVertical_bias="0.968" />
+
+    <EditText
+        android:id="@+id/textSearch"
+        android:layout_width="312dp"
+        android:layout_height="50dp"
+        android:text="Введите местоположение"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/button"
+        app:layout_constraintHorizontal_bias="0.02"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.966" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
