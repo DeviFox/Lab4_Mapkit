@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Geocoder</string>
+    <string name="search">Search</string>
+    <string name="text_input">Введите местоположение</string>
+</resources>
