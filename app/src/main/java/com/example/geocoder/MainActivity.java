@@ -38,6 +38,19 @@ public class MainActivity extends Activity implements Session.SearchListener, Ca
     private SearchManager searchManager;
     private Session searchSession;
 
+
+    /*private OnClickListener mCorkyListener = new OnClickListener() {
+        public void onClick(View v) {
+
+        }
+        protected void onCreate(Bundle savedValues) {
+
+            Button button = (Button)findViewById(R.id.button);
+            button.setOnClickListener(mCorkyListener);
+
+        }
+    };*/
+
     private void submitQuery(String query) {
         searchSession = searchManager.submit(
                 query,
@@ -73,7 +86,7 @@ public class MainActivity extends Activity implements Session.SearchListener, Ca
         });
 
         mapView.getMap().move(
-                new CameraPosition(new Point(43.1162355,131.9039189), 9.0f, 0.0f, 0.0f));
+                new CameraPosition(new Point(43.1162355,131.9039189), 12.0f, 0.0f, 0.0f));
 
         submitQuery(searchEdit.getText().toString());
     }

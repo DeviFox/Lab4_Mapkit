@@ -20,9 +20,10 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="94dp"
-        android:layout_height="51dp"
+        android:layout_width="35dp"
+        android:layout_height="26dp"
         android:text="@string/search"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.99"
@@ -32,15 +33,15 @@
 
     <EditText
         android:id="@+id/textSearch"
-        android:layout_width="312dp"
-        android:layout_height="50dp"
+        android:layout_width="410dp"
+        android:layout_height="48dp"
         android:hapticFeedbackEnabled="true"
-        android:text="Введите местоположение"
+        android:hint="             Введите населенный пункт"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintHorizontal_bias="0.02"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.966" />
