@@ -37,6 +37,7 @@
         android:layout_height="48dp"
         android:hapticFeedbackEnabled="true"
         android:hint="             Введите населенный пункт"
+        android:singleLine="true"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"

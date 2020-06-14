@@ -6,11 +6,8 @@ import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-
-
 import androidx.annotation.NonNull;
-
-import com.yandex.mapkit.GeoObjectCollection;
+import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.map.CameraListener;
@@ -39,17 +36,7 @@ public class MainActivity extends Activity implements Session.SearchListener, Ca
     private Session searchSession;
 
 
-    /*private OnClickListener mCorkyListener = new OnClickListener() {
-        public void onClick(View v) {
 
-        }
-        protected void onCreate(Bundle savedValues) {
-
-            Button button = (Button)findViewById(R.id.button);
-            button.setOnClickListener(mCorkyListener);
-
-        }
-    };*/
 
     private void submitQuery(String query) {
         searchSession = searchManager.submit(
@@ -87,6 +74,8 @@ public class MainActivity extends Activity implements Session.SearchListener, Ca
 
         mapView.getMap().move(
                 new CameraPosition(new Point(43.1162355,131.9039189), 12.0f, 0.0f, 0.0f));
+                new Animation(Animation.Type.SMOOTH, 5);
+
 
         submitQuery(searchEdit.getText().toString());
     }
@@ -106,19 +95,26 @@ public class MainActivity extends Activity implements Session.SearchListener, Ca
     }
 
     @Override
-    public void onSearchResponse(Response response) {
+    public void onSearchResponse(@org.jetbrains.annotations.NotNull Response response) {
         MapObjectCollection mapObjects = mapView.getMap().getMapObjects();
         mapObjects.clear();
 
-        for (GeoObjectCollection.Item searchResult : response.getCollection().getChildren()) {
-            Point resultLocation = searchResult.getObj().getGeometry().get(0).getPoint();
+//        for (GeoObjectCollection.Item searchResult : response.getCollection().getChildren()) {
+ //           Point resultLocation = response.getCollection().getChildren(0).getObj().getGeometry().get(0).getPoint();
+        Point resultLocation = response.getCollection().getChildren().get(0).getObj().getGeometry().get(0).getPoint();
+
             if (resultLocation != null) {
                 mapObjects.addPlacemark(
                         resultLocation,
                         ImageProvider.fromResource(this, R.drawable.map));
+
+
+                mapView.getMap().move(
+                        new CameraPosition(new Point(resultLocation.getLatitude(), resultLocation.getLongitude()), 14.0f, 0.0f, 0.0f));
+                new Animation(Animation.Type.SMOOTH, 5);
+
             }
         }
-    }
 
     @Override
     public void onSearchError(@NonNull Error error) {

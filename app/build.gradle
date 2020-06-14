@@ -44,5 +44,6 @@ dependencies {
     implementation 'com.yandex.android:places:3.5.0'
     implementation 'com.yandex.android:search:3.5.0'
     implementation 'com.yandex.android:transport:3.5.0'
+    implementation 'org.jetbrains:annotations-java5:15.0'
 }
 
